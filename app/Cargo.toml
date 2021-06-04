@@ -1,0 +1,17 @@
+[package]
+name = "app"
+version = "0.1.0"
+authors = ["Chris Sampson <csampson@appliedsystems.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+moxie = "*"
+mox = "*"
+topo = "*"
+illicit = "*"
+legion = "0.3.1"
+engine = { path = "../engine", version = "0.1.0"}
+app_state = { path = "../app_state", version = "0.1.0"}
