@@ -17,7 +17,7 @@ impl StateProcessor<Message> for TestState {
         match message {
             Message::AddControl => {
                 Self {
-                    control_count: self.control_count + 1,
+                    control_count: self.control_count + 2,
                     ..*self
                 }
             }

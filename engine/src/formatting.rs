@@ -15,7 +15,7 @@ impl Pretty for legion::World {
         registry.register::<Radius>("Radius".to_string());
         registry.register::<StrokeWidth>("StrokeWidth".to_string());
         let json = serde_json::to_value(self.as_serializable(legion::passthrough(), &registry)).unwrap();
-        println!("{:#}", json);
+        //println!("{:#}", json);
     }
 }
 
