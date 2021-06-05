@@ -12,6 +12,5 @@ moxie = "*"
 mox = "*"
 topo = "*"
 illicit = "*"
-legion = "0.3.1"
 engine = { path = "../engine", version = "0.1.0"}
 app_state = { path = "../app_state", version = "0.1.0"}

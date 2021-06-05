@@ -96,7 +96,7 @@ pub struct NodeChanges<T> where T: Eq + PartialEq + Hash {
     removed: Vec<T>
 }
 
-impl<T> NodeChanges<T> where T: Eq + PartialEq + Hash + Copy {
+impl<T> NodeChanges<T> where T: Eq + PartialEq + Hash + Clone {
     pub fn between(current: &Vec<T>, previous: &Vec<T>) -> NodeChanges<T> {
         let current: HashSet<&T> = current.iter().collect();
         let previous: HashSet<&T> = previous.iter().collect();
@@ -104,8 +104,8 @@ impl<T> NodeChanges<T> where T: Eq + PartialEq + Hash + Copy {
         let deletions = previous.difference(&current);
         
         NodeChanges { 
-            added: additions.map(|node| **node).collect(),
-            removed: deletions.map(|node| **node).collect(),
+            added: additions.map(|node| (**node).clone()).collect(),
+            removed: deletions.map(|node| (**node).clone()).collect(),
         } 
     }
 

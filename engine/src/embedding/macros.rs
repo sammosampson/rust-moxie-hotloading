@@ -11,6 +11,7 @@ macro_rules! element_creator_func {
     }
 }
 
+#[macro_export]
 macro_rules! element {
     (
         <$name:ident>
@@ -22,7 +23,7 @@ macro_rules! element {
         paste::item! {
             element_creator_func!($name);
             
-            #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+            #[derive(Debug, Clone, PartialEq, Eq, Hash)]
             pub enum [<$name:camel Attribute>] {
                 None,
                 $($(
@@ -50,8 +51,8 @@ macro_rules! element {
                     }
                 }
 
-                #[from_env(state: &Key<SourceBuildChangeState>)]
-                #[from_env(cache: &Key<NodeBuildCache>)]
+                #[illicit::from_env(state: &moxie::Key<SourceBuildChangeState>)]
+                #[illicit::from_env(cache: &moxie::Key<NodeBuildCache>)]
                 pub fn build(&self) -> Node {
                     moxie::cache(
                         self,
@@ -64,7 +65,7 @@ macro_rules! element {
                     )
                 }
                 
-                #[from_env(cache: &Key<NodeBuildCache>)]
+                #[illicit::from_env(cache: &moxie::Key<NodeBuildCache>)]
                 fn previous_version(&self, node_id: u64) -> Self {
                     cache.get_previous_node_revision(node_id, [<$name:camel Builder>]::default())
                 }
@@ -106,7 +107,7 @@ macro_rules! element {
             }
 
             impl SourceBuildChange for [<$name:camel Change>] {
-                fn apply<'a>(&self, command_buffer: &mut CommandBuffer, maps: &mut SourceBuildMaps<'a>) {        
+                fn apply<'a>(&self, command_buffer: &mut legion::systems::CommandBuffer, maps: &mut SourceBuildMaps<'a>) {        
                     let parent = command_buffer.get_or_create(self.node_id, || $component, maps);
                     
                     self.child_changes.process_additions(&mut |child_id| command_buffer.add_child(parent, child_id, maps));    
@@ -116,7 +117,7 @@ macro_rules! element {
                         match attribute {
                             $($(
                             [<$name:camel Attribute>]::[<$attr:camel>](value) => 
-                                command_buffer.add_component(parent, [<$attr:camel>]::from(*value)),
+                                command_buffer.add_component(parent, [<$attr:camel>]::from(value.clone())),
                             )*)?
                             [<$name:camel Attribute>]::None => {}
                         }

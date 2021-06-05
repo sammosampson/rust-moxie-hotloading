@@ -1,8 +1,11 @@
-use app_state::*;
 use mox::mox;
-use moxie::Key;
+use moxie::*;
 use illicit::*;
-use engine::embedding::*;
+use engine::{
+    components::*, 
+    embedding::*
+};
+use app_state::*;
 
 pub enum Message {
     AddControl
@@ -17,7 +20,7 @@ impl StateProcessor<Message> for TestState {
         match message {
             Message::AddControl => {
                 Self {
-                    control_count: self.control_count + 2,
+                    control_count: self.control_count + 1,
                     ..*self
                 }
             }
@@ -66,7 +69,7 @@ fn visibilty_test_control() -> Node {
 fn test_control() -> Node {
     mox!(
         <vertical_stack>
-            <circle radius=10 stroke_width=5 />
+            <circle radius=10 stroke_width=5 content="xx".to_string() stroke_colour=Colour::from((1.123, 1.124, 1.125, 2.666)) />
         </vertical_stack>
     )
 }

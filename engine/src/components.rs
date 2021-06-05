@@ -93,6 +93,76 @@ impl From<u16> for StrokeWidth {
     }
 }
 
+impl From<Colour> for StrokeColour {
+    fn from(colour: Colour) -> Self {
+        Self {
+            colour
+        }
+    }
+}
+
+pub struct Content { 
+    pub text: String
+}
+
+impl From<&str> for Content {
+    fn from(text: &str) -> Self {
+        Self {
+            text: text.to_string()
+        }
+    }
+}
+
+impl From<String> for Content {
+    fn from(text: String) -> Self {
+        Self {
+            text
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize, Default)]
+pub struct StrokeColour {
+    pub colour: Colour
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize, Default)]
+pub struct Colour {
+    pub r: u128,
+    pub g: u128,
+    pub b: u128,
+    pub a: u128,
+}
+
+impl From<(u128, u128, u128, u128)> for Colour {
+    fn from(colour: (u128, u128, u128, u128)) -> Self {
+        Self {
+            r: colour.0,
+            g: colour.1,
+            b: colour.2,
+            a: colour.3
+        }
+    }
+}
+
+impl From<(f32, f32, f32, f32)> for Colour {
+    fn from(colour: (f32, f32, f32, f32)) -> Self {
+        Self {
+            r: colour.0 as u128,
+            g: colour.1 as u128,
+            b: colour.2 as u128,
+            a: colour.3 as u128
+        }
+    }
+}
+
+
+impl Into<(f32, f32, f32, f32)> for Colour {
+    fn into(self) -> (f32, f32, f32, f32) {
+        (self.r as f32, self.g as f32, self.b as f32, self.a as f32)
+    }
+}
+
 pub trait EntityCreator {
     fn get_or_create<'a, T: Send + Sync + 'static>(&mut self, id: u64, creation_func: impl FnOnce() -> T, maps: &mut SourceBuildMaps<'a>) -> Entity;
     fn add_child<'a>(&mut self, parent: Entity, child_id: &u64, maps: &mut SourceBuildMaps<'a>);

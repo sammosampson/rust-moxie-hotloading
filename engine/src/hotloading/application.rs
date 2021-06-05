@@ -11,8 +11,8 @@ pub struct HotLoadableApplication<TState: State> {
 }
 
 impl<TState: State> HotLoadableApplication<TState> {
-    pub fn new(library_folder: &str) -> Self {
-        let app_library = HotReloadableLibrary::new(library_folder, "app");
+    pub fn new(app_library_location: &str, app_library_filename: &str) -> Self {
+        let app_library = HotReloadableLibrary::new(app_library_location, app_library_filename);
         let state = HotLoadableApplication::create_state(&app_library);
         Self {
             app_library,
